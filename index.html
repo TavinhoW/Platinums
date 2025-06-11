@@ -2,28 +2,42 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Playstation Platinums - Tavinho</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="menu" id="main-menu">
-    <h1>Playstation Platinums</h1>
-    <p>Made by: Tavinho</p>
-    <button onclick="showSubMenu()">1. Platinar (Jogos que tenho)</button>
-    <button onclick="exitApp()">2. Sair</button>
-    <p style="text-align:center">PSN: TavinhoKillerPT</p>
-</div>
+<header>
+    <h1>🎮 Playstation Platinums</h1>
+    <p>by Tavinho</p>
+</header>
 
-<div class="submenu" id="sub-menu" style="display:none;">
-    <h2>Platinar (Jogos que tenho)</h2>
-    <button onclick="verJogos()">1. Ver Jogos</button>
-    <button onclick="adicionarJogo()">2. Adicionar Jogo</button>
-    <button onclick="removerJogo()">3. Remover Jogo</button>
-    <button class="back" onclick="showMainMenu()">4. Voltar</button>
-</div>
+<main id="app">
+    <!-- Módulo inicial -->
+    <section id="main-menu" class="card">
+        <h2>Menu Principal</h2>
+        <button onclick="showSubMenu()">🎯 Platinar</button>
+        <button onclick="exitApp()">🚪 Sair</button>
+        <p class="psn">PSN: TavinhoKillerPT</p>
+    </section>
 
-<div class="submenu" id="output" style="display:none;"></div>
+    <!-- Submenu -->
+    <section id="sub-menu" class="card hidden">
+        <h2>🎯 Jogos para Platinar</h2>
+        <button onclick="verJogos()">📄 Ver Lista</button>
+        <button onclick="adicionarJogo()">➕ Adicionar Jogo</button>
+        <button onclick="removerJogo()">🗑️ Remover Jogo</button>
+        <button class="back" onclick="showMainMenu()">🔙 Voltar</button>
+    </section>
+
+    <!-- Output dinâmico -->
+    <section id="output" class="card hidden"></section>
+</main>
+
+<footer>
+    <p>© Tavinho 2025 • Platinas Web</p>
+</footer>
 
 <script src="script.js"></script>
 </body>
