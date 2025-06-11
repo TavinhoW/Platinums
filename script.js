@@ -7,6 +7,9 @@ function atualizarUI() {
     lista.innerHTML = "";
     remover.innerHTML = "";
 
+    // Ordena a lista alfabeticamente
+    jogos.sort((a, b) => a.localeCompare(b));
+
     jogos.forEach(jogo => {
         const li = document.createElement("li");
         li.textContent = jogo;
