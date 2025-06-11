@@ -1,97 +1,111 @@
-function hideAll() {
-    document.querySelectorAll("section.card").forEach(sec => sec.classList.add("hidden"));
+// Carregar do localStorage
+let platina = JSON.parse(localStorage.getItem('platina')) || [];
+
+// Guardar no localStorage
+function salvarJogos() {
+    localStorage.setItem('platina', JSON.stringify(platina));
 }
 
-function showMainMenu() {
-    hideAll();
-    document.getElementById("main-menu").classList.remove("hidden");
-}
+// Mostrar jogos na lista
+function atualizarLista() {
+    const lista = document.getElementById('lista-jogos');
+    lista.innerHTML = '';
 
-function showSubMenu() {
-    hideAll();
-    document.getElementById("sub-menu").classList.remove("hidden");
-}
-
-function carregarJogos() {
-    const data = localStorage.getItem("jogosPlatina");
-    return data ? JSON.parse(data) : [];
-}
-
-function salvarJogos(jogos) {
-    localStorage.setItem("jogosPlatina", JSON.stringify(jogos));
-}
-
-function verJogos() {
-    hideAll();
-    const output = document.getElementById("output");
-    const jogos = carregarJogos();
-    output.innerHTML = `<h2>🎮 Lista de Jogos</h2>`;
-
-    if (jogos.length === 0) {
-        output.innerHTML += `<p>Nenhum jogo adicionado ainda.</p>`;
+    if (platina.length === 0) {
+        lista.innerHTML = '<li>Nenhum jogo adicionado ainda.</li>';
     } else {
-        const ul = document.createElement("ul");
-        jogos.forEach(jogo => {
-            const li = document.createElement("li");
+        platina.sort().forEach(jogo => {
+            const li = document.createElement('li');
             li.textContent = jogo;
-            ul.appendChild(li);
+            lista.appendChild(li);
         });
-        output.appendChild(ul);
     }
-
-    output.innerHTML += `<button class="back" onclick="showSubMenu()">🔙 Voltar</button>`;
-    output.classList.remove("hidden");
 }
 
-function adicionarJogo() {
-    hideAll();
-    document.getElementById('add-form').classList.remove('hidden');
-    document.getElementById('inputJogo').value = "";
-    document.getElementById('addMessage').textContent = "";
-}
+// Mostrar lista com botões para remover
+function atualizarListaRemover() {
+    const lista = document.getElementById('lista-remover');
+    lista.innerHTML = '';
 
-document.getElementById('formAdicionarJogo').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const input = document.getElementById('inputJogo');
-    const nome = input.value.trim();
-    const msg = document.getElementById('addMessage');
-
-    if (nome === "") {
-        msg.textContent = "⚠️ Nome inválido.";
-        return;
-    }
-
-    const jogos = carregarJogos();
-    if (jogos.some(j => j.toLowerCase() === nome.toLowerCase())) {
-        msg.textContent = "⚠️ Jogo já existe na lista.";
-        return;
-    }
-
-    jogos.push(nome);
-    jogos.sort();
-    salvarJogos(jogos);
-    msg.textContent = `✅ Jogo "${nome}" adicionado com sucesso!`;
-    input.value = "";
-});
-
-function removerJogo() {
-    const jogo = prompt("Nome do jogo a remover:");
-    if (!jogo) return;
-
-    let jogos = carregarJogos();
-    const index = jogos.findIndex(j => j.toLowerCase() === jogo.toLowerCase());
-
-    if (index !== -1) {
-        jogos.splice(index, 1);
-        salvarJogos(jogos);
-        alert(`✅ Jogo "${jogo}" removido com sucesso!`);
+    if (platina.length === 0) {
+        lista.innerHTML = '<li>Nenhum jogo para remover.</li>';
     } else {
-        alert("❌ Jogo não encontrado.");
-    }
+        platina.sort().forEach(jogo => {
+            const li = document.createElement('li');
+            const span = document.createElement('span');
+            span.textContent = jogo;
 
-    showSubMenu();
+            const btn = document.createElement('button');
+            btn.textContent = 'Remover';
+            btn.className = 'remove-button';
+            btn.onclick = () => {
+                removerJogo(jogo);
+                atualizarListaRemover();
+            };
+
+            li.appendChild(span);
+            li.appendChild(btn);
+            lista.appendChild(li);
+        });
+    }
 }
 
-function exitApp() {
-    alert("👋 Até à próxima, Tavinho!");
+// Funções para adicionar/remover
+function adicionarJogo() {
+    const input = document.getElementById('novo-jogo');
+    const jogo = input.value.trim();
+
+    if (!jogo) {
+        alert('Nome do jogo inválido.');
+        return;
+    }
+
+    if (platina.some(j => j.toLowerCase() === jogo.toLowerCase())) {
+        alert('Jogo já existe na lista.');
+        return;
+    }
+
+    platina.push(jogo);
+    salvarJogos();
+    input.value = '';
+    alert(`Jogo "${jogo}" adicionado com sucesso!`);
+}
+
+function removerJogo(jogo) {
+    platina = platina.filter(j => j !== jogo);
+    salvarJogos();
+    alert(`Jogo "${jogo}" removido com sucesso!`);
+}
+
+// Navegação entre menus
+function mostrarSecao(id) {
+    document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+}
+
+function mostrarMenuPlatinar() {
+    mostrarSecao('menu-platinar');
+}
+
+function mostrarVerJogos() {
+    atualizarLista();
+    mostrarSecao('ver-jogos');
+}
+
+function mostrarAdicionarJogo() {
+    mostrarSecao('adicionar-jogo');
+}
+
+function mostrarRemoverJogo() {
+    atualizarListaRemover();
+    mostrarSecao('remover-jogo');
+}
+
+function voltarAoMenuPrincipal() {
+    mostrarSecao('menu-principal');
+}
+
+function sair() {
+    alert('Saindo do Programa...');
+    location.reload();
 }
