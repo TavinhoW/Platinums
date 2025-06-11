@@ -1,85 +1,83 @@
-const storageKey = "jogosPlatina";
+const STORAGE_KEY = "jogos_platina";
+let jogos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-function loadJogos() {
-    return JSON.parse(localStorage.getItem(storageKey)) || [];
+// Atualiza estrutura antiga (string) para objeto
+if (typeof jogos[0] === "string") {
+    jogos = jogos.map(nome => ({ nome, foco: false }));
 }
 
-function saveJogos(jogos) {
-    localStorage.setItem(storageKey, JSON.stringify(jogos.sort((a, b) => a.localeCompare(b))));
-}
+function atualizarUI() {
+    const lista = document.getElementById("lista-jogos");
+    const remover = document.getElementById("lista-remover");
+    const foco = document.getElementById("lista-foco");
 
-function showMainMenu() {
-    document.getElementById("main-menu").style.display = "block";
-    document.getElementById("sub-menu").style.display = "none";
-    document.getElementById("output").style.display = "none";
-}
+    lista.innerHTML = "";
+    remover.innerHTML = "";
+    foco.innerHTML = "";
 
-function showSubMenu() {
-    document.getElementById("main-menu").style.display = "none";
-    document.getElementById("sub-menu").style.display = "block";
-    document.getElementById("output").style.display = "none";
-}
+    // Primeiro ordena por nome
+    jogos.sort((a, b) => a.nome.localeCompare(b.nome));
+    // Depois ordena por foco (os com foco vêm primeiro)
+    jogos.sort((a, b) => (b.foco === true) - (a.foco === true));
 
-function verJogos() {
-    const jogos = loadJogos();
-    let html = "<h2>Jogos para Platinar</h2>";
-    if (jogos.length === 0) {
-        html += "<p>Nenhum jogo adicionado ainda.</p>";
-    } else {
-        html += "<ul>" + jogos.map(j => `<li>${j}</li>`).join('') + "</ul>";
-    }
-    html += '<button class="back" onclick="showSubMenu()">Voltar</button>';
-    showOutput(html);
+    jogos.forEach(jogo => {
+        // Lista geral
+        const li = document.createElement("li");
+        li.innerHTML = `
+            ${jogo.nome} ${jogo.foco ? '⭐' : ''}
+            <button onclick="alternarFoco('${jogo.nome}')">⭐</button>
+        `;
+        lista.appendChild(li);
+
+        // Lista de remoção
+        const liRemove = document.createElement("li");
+        liRemove.innerHTML = `
+            ${jogo.nome}
+            <button onclick="removerJogo('${jogo.nome}')">Remover</button>
+        `;
+        remover.appendChild(liRemove);
+
+        // Lista de foco
+        if (jogo.foco) {
+            const liFoco = document.createElement("li");
+            liFoco.textContent = jogo.nome;
+            foco.appendChild(liFoco);
+        }
+    });
 }
 
 function adicionarJogo() {
-    let jogo = prompt("Digite o nome do jogo para platinar:");
-    if (!jogo) {
-        alert("Nome inválido.");
-        return;
+    const input = document.getElementById("novo-jogo");
+    const nome = input.value.trim();
+    if (nome && !jogos.some(j => j.nome === nome)) {
+        jogos.push({ nome, foco: false });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(jogos));
+        input.value = "";
+        atualizarUI();
     }
-    let jogos = loadJogos();
-    if (jogos.some(j => j.toLowerCase() === jogo.toLowerCase())) {
-        alert("Jogo já existe.");
-        return;
+}
+
+function removerJogo(nome) {
+    jogos = jogos.filter(j => j.nome !== nome);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(jogos));
+    atualizarUI();
+}
+
+function alternarFoco(nome) {
+    const jogo = jogos.find(j => j.nome === nome);
+    if (jogo) {
+        jogo.foco = !jogo.foco;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(jogos));
+        atualizarUI();
     }
-    jogos.push(jogo);
-    saveJogos(jogos);
-    alert("Jogo adicionado com sucesso!");
 }
 
-function removerJogo() {
-    const jogos = loadJogos();
-    if (jogos.length === 0) {
-        alert("Nenhum jogo para remover.");
-        return;
-    }
-
-    let html = "<h2>Remover Jogo</h2><ul class='game-list'>";
-    jogos.forEach((jogo, i) => {
-        html += `<li>${jogo} <button class="remove-button" onclick="confirmRemover('${jogo}')">Remover</button></li>`;
-    });
-    html += "</ul><button class='back' onclick='showSubMenu()'>Voltar</button>";
-    showOutput(html);
+function mostrarSecao(id) {
+    document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
+    document.getElementById(id).classList.remove("hidden");
+    atualizarUI();
 }
 
-function confirmRemover(jogo) {
-    let jogos = loadJogos();
-    jogos = jogos.filter(j => j !== jogo);
-    saveJogos(jogos);
-    alert(`Jogo "${jogo}" removido com sucesso!`);
-    removerJogo();
-}
-
-function showOutput(html) {
-    document.getElementById("main-menu").style.display = "none";
-    document.getElementById("sub-menu").style.display = "none";
-    const out = document.getElementById("output");
-    out.innerHTML = html;
-    out.style.display = "block";
-}
-
-function exitApp() {
-    alert("Saindo do Programa.");
-    showMainMenu();
-}
+window.onload = () => {
+    atualizarUI();
+};
