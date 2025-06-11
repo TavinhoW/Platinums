@@ -1,53 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Playstation Platinums</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
-<main>
-    <!-- Menu Principal -->
-    <section id="menu-principal" class="card">
-        <h1>Playstation Platinums</h1>
-        <button onclick="mostrarMenuPlatinar()">Platinar (Jogos que tenho)</button>
-        <button onclick="sair()">Sair</button>
-        <p class="psn">PSN: TavinhoKillerPT</p>
-    </section>
+<div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2 class="logo">🎮 Platina</h2>
+        <nav>
+            <button onclick="mostrarSecao('ver-jogos')" class="nav-btn">📜 Ver</button>
+            <button onclick="mostrarSecao('adicionar-jogo')" class="nav-btn">➕ Adicionar</button>
+            <button onclick="mostrarSecao('remover-jogo')" class="nav-btn">❌ Remover</button>
+        </nav>
+    </aside>
 
-    <!-- Menu Platinar -->
-    <section id="menu-platinar" class="card hidden">
-        <h2>Platinar (Jogos que tenho)</h2>
-        <button onclick="mostrarVerJogos()">Ver Jogos</button>
-        <button onclick="mostrarAdicionarJogo()">Adicionar Jogo</button>
-        <button onclick="mostrarRemoverJogo()">Remover Jogo</button>
-        <button class="back" onclick="voltarAoMenuPrincipal()">Voltar</button>
-    </section>
+    <!-- Conteúdo principal -->
+    <main class="content">
+        <section id="menu-jogos" class="card active">
+            <h1>Playstation Platinums</h1>
+            <p>Organiza os jogos que queres platinar</p>
+        </section>
 
-    <!-- Ver Jogos -->
-    <section id="ver-jogos" class="card hidden">
-        <h2>Jogos para Platinar</h2>
-        <ul id="lista-jogos"></ul>
-        <button class="back" onclick="mostrarMenuPlatinar()">Voltar</button>
-    </section>
+        <section id="ver-jogos" class="card hidden">
+            <h2>Jogos para Platinar</h2>
+            <ul id="lista-jogos"></ul>
+        </section>
 
-    <!-- Adicionar Jogo -->
-    <section id="adicionar-jogo" class="card hidden">
-        <h2>Adicionar Jogo</h2>
-        <input type="text" id="novo-jogo" placeholder="Digite o nome do jogo" />
-        <button onclick="adicionarJogo()">Adicionar</button>
-        <button class="back" onclick="mostrarMenuPlatinar()">Voltar</button>
-    </section>
+        <section id="adicionar-jogo" class="card hidden">
+            <h2>Adicionar Novo Jogo</h2>
+            <input type="text" id="novo-jogo" placeholder="Nome do jogo" />
+            <button onclick="adicionarJogo()">Adicionar</button>
+        </section>
 
-    <!-- Remover Jogo -->
-    <section id="remover-jogo" class="card hidden">
-        <h2>Remover Jogo</h2>
-        <ul id="lista-remover"></ul>
-        <button class="back" onclick="mostrarMenuPlatinar()">Voltar</button>
-    </section>
-</main>
-
-<script src="script.js"></script>
+        <section id="remover-jogo" class="card hidden">
+            <h2>Remover Jogo</h2>
+            <ul id="lista-remover"></ul>
+        </section>
+    </main>
+</div>
 </body>
 </html>
