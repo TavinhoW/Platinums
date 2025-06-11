@@ -1,85 +1,97 @@
-const storageKey = "jogosPlatina";
-
-function loadJogos() {
-    return JSON.parse(localStorage.getItem(storageKey)) || [];
-}
-
-function saveJogos(jogos) {
-    localStorage.setItem(storageKey, JSON.stringify(jogos.sort((a, b) => a.localeCompare(b))));
+function hideAll() {
+    document.querySelectorAll("section.card").forEach(sec => sec.classList.add("hidden"));
 }
 
 function showMainMenu() {
-    document.getElementById("main-menu").style.display = "block";
-    document.getElementById("sub-menu").style.display = "none";
-    document.getElementById("output").style.display = "none";
+    hideAll();
+    document.getElementById("main-menu").classList.remove("hidden");
 }
 
 function showSubMenu() {
-    document.getElementById("main-menu").style.display = "none";
-    document.getElementById("sub-menu").style.display = "block";
-    document.getElementById("output").style.display = "none";
+    hideAll();
+    document.getElementById("sub-menu").classList.remove("hidden");
+}
+
+function carregarJogos() {
+    const data = localStorage.getItem("jogosPlatina");
+    return data ? JSON.parse(data) : [];
+}
+
+function salvarJogos(jogos) {
+    localStorage.setItem("jogosPlatina", JSON.stringify(jogos));
 }
 
 function verJogos() {
-    const jogos = loadJogos();
-    let html = "<h2>Jogos para Platinar</h2>";
+    hideAll();
+    const output = document.getElementById("output");
+    const jogos = carregarJogos();
+    output.innerHTML = `<h2>🎮 Lista de Jogos</h2>`;
+
     if (jogos.length === 0) {
-        html += "<p>Nenhum jogo adicionado ainda.</p>";
+        output.innerHTML += `<p>Nenhum jogo adicionado ainda.</p>`;
     } else {
-        html += "<ul>" + jogos.map(j => `<li>${j}</li>`).join('') + "</ul>";
+        const ul = document.createElement("ul");
+        jogos.forEach(jogo => {
+            const li = document.createElement("li");
+            li.textContent = jogo;
+            ul.appendChild(li);
+        });
+        output.appendChild(ul);
     }
-    html += '<button class="back" onclick="showSubMenu()">Voltar</button>';
-    showOutput(html);
+
+    output.innerHTML += `<button class="back" onclick="showSubMenu()">🔙 Voltar</button>`;
+    output.classList.remove("hidden");
 }
 
 function adicionarJogo() {
-    let jogo = prompt("Digite o nome do jogo para platinar:");
-    if (!jogo) {
-        alert("Nome inválido.");
-        return;
-    }
-    let jogos = loadJogos();
-    if (jogos.some(j => j.toLowerCase() === jogo.toLowerCase())) {
-        alert("Jogo já existe.");
-        return;
-    }
-    jogos.push(jogo);
-    saveJogos(jogos);
-    alert("Jogo adicionado com sucesso!");
+    hideAll();
+    document.getElementById('add-form').classList.remove('hidden');
+    document.getElementById('inputJogo').value = "";
+    document.getElementById('addMessage').textContent = "";
 }
+
+document.getElementById('formAdicionarJogo').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const input = document.getElementById('inputJogo');
+    const nome = input.value.trim();
+    const msg = document.getElementById('addMessage');
+
+    if (nome === "") {
+        msg.textContent = "⚠️ Nome inválido.";
+        return;
+    }
+
+    const jogos = carregarJogos();
+    if (jogos.some(j => j.toLowerCase() === nome.toLowerCase())) {
+        msg.textContent = "⚠️ Jogo já existe na lista.";
+        return;
+    }
+
+    jogos.push(nome);
+    jogos.sort();
+    salvarJogos(jogos);
+    msg.textContent = `✅ Jogo "${nome}" adicionado com sucesso!`;
+    input.value = "";
+});
 
 function removerJogo() {
-    const jogos = loadJogos();
-    if (jogos.length === 0) {
-        alert("Nenhum jogo para remover.");
-        return;
+    const jogo = prompt("Nome do jogo a remover:");
+    if (!jogo) return;
+
+    let jogos = carregarJogos();
+    const index = jogos.findIndex(j => j.toLowerCase() === jogo.toLowerCase());
+
+    if (index !== -1) {
+        jogos.splice(index, 1);
+        salvarJogos(jogos);
+        alert(`✅ Jogo "${jogo}" removido com sucesso!`);
+    } else {
+        alert("❌ Jogo não encontrado.");
     }
 
-    let html = "<h2>Remover Jogo</h2><ul class='game-list'>";
-    jogos.forEach((jogo, i) => {
-        html += `<li>${jogo} <button class="remove-button" onclick="confirmRemover('${jogo}')">Remover</button></li>`;
-    });
-    html += "</ul><button class='back' onclick='showSubMenu()'>Voltar</button>";
-    showOutput(html);
-}
-
-function confirmRemover(jogo) {
-    let jogos = loadJogos();
-    jogos = jogos.filter(j => j !== jogo);
-    saveJogos(jogos);
-    alert(`Jogo "${jogo}" removido com sucesso!`);
-    removerJogo();
-}
-
-function showOutput(html) {
-    document.getElementById("main-menu").style.display = "none";
-    document.getElementById("sub-menu").style.display = "none";
-    const out = document.getElementById("output");
-    out.innerHTML = html;
-    out.style.display = "block";
+    showSubMenu();
 }
 
 function exitApp() {
-    alert("Saindo do Programa.");
-    showMainMenu();
+    alert("👋 Até à próxima, Tavinho!");
 }

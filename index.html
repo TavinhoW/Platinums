@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Playstation Platinums - Tavinho</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -14,7 +14,8 @@
 </header>
 
 <main id="app">
-    <!-- Módulo inicial -->
+
+    <!-- Menu Principal -->
     <section id="main-menu" class="card">
         <h2>Menu Principal</h2>
         <button onclick="showSubMenu()">🎯 Platinar</button>
@@ -31,8 +32,20 @@
         <button class="back" onclick="showMainMenu()">🔙 Voltar</button>
     </section>
 
-    <!-- Output dinâmico -->
+    <!-- Ver Jogos -->
     <section id="output" class="card hidden"></section>
+
+    <!-- Formulário Adicionar -->
+    <section id="add-form" class="card hidden">
+        <h2>➕ Adicionar Jogo</h2>
+        <form id="formAdicionarJogo">
+            <input type="text" id="inputJogo" placeholder="Nome do jogo" required />
+            <button type="submit">Adicionar</button>
+        </form>
+        <p id="addMessage" class="psn"></p>
+        <button class="back" onclick="showSubMenu()">🔙 Voltar</button>
+    </section>
+
 </main>
 
 <footer>
