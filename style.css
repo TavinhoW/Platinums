@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #1e1e1e;
+    color: #fff;
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.menu, .submenu {
+    max-width: 500px;
+    margin: auto;
+    background: #2e2e2e;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+}
+
+.game-list {
+    margin-top: 20px;
+}
+
+.back {
+    background: #555;
+}
+
+.remove-button {
+    background: #f44336;
+}

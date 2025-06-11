@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <title>Playstation Platinums - Tavinho</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="menu" id="main-menu">
+    <h1>Playstation Platinums</h1>
+    <p>Made by: Tavinho</p>
+    <button onclick="showSubMenu()">1. Platinar (Jogos que tenho)</button>
+    <button onclick="exitApp()">2. Sair</button>
+    <p style="text-align:center">PSN: TavinhoKillerPT</p>
+</div>
+
+<div class="submenu" id="sub-menu" style="display:none;">
+    <h2>Platinar (Jogos que tenho)</h2>
+    <button onclick="verJogos()">1. Ver Jogos</button>
+    <button onclick="adicionarJogo()">2. Adicionar Jogo</button>
+    <button onclick="removerJogo()">3. Remover Jogo</button>
+    <button class="back" onclick="showMainMenu()">4. Voltar</button>
+</div>
+
+<div class="submenu" id="output" style="display:none;"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
