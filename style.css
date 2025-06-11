@@ -128,3 +128,68 @@ li button:hover {
 .active {
     display: block;
 }
+
+/* Estilos para ecrãs pequenos (telemóveis) */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 1rem;
+        gap: 0.5rem;
+    }
+
+    .sidebar img {
+        display: none;
+    }
+
+    .logo {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .nav-btn {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+        width: auto;
+    }
+
+    .content {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+
+    li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    li button {
+        align-self: flex-end;
+    }
+
+    input[type="text"] {
+        font-size: 1rem;
+        padding: 0.6rem;
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+    }
+}
+
