@@ -113,6 +113,7 @@ li {
 
 li button {
     background: #d32f2f;
+    margin-left: 0.5rem;
 }
 
 li button:hover {

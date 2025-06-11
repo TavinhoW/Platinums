@@ -15,6 +15,7 @@
         <h2 class="logo">Platinum Trophies</h2>
         <nav>
             <button onclick="mostrarSecao('ver-jogos')" class="nav-btn">📜 Ver</button>
+            <button onclick="mostrarSecao('a-platinar')" class="nav-btn">⭐ A Platinar</button>
             <button onclick="mostrarSecao('adicionar-jogo')" class="nav-btn">➕ Adicionar</button>
             <button onclick="mostrarSecao('remover-jogo')" class="nav-btn">❌ Remover</button>
         </nav>
@@ -34,6 +35,11 @@
         <section id="ver-jogos" class="card hidden">
             <h2>Jogos para Platinar</h2>
             <ul id="lista-jogos"></ul>
+        </section>
+
+        <section id="a-platinar" class="card hidden">
+            <h2>Jogos em Foco (⭐ A Platinar)</h2>
+            <ul id="lista-foco"></ul>
         </section>
 
         <section id="adicionar-jogo" class="card hidden">
