@@ -23,18 +23,20 @@ function atualizarUI() {
     jogos.forEach(jogo => {
         // Lista geral
         const li = document.createElement("li");
-        li.innerHTML = `
-            ${jogo.nome} ${jogo.foco ? '⭐' : ''}
-            <button onclick="alternarFoco('${jogo.nome}')">⭐</button>
-        `;
+        li.textContent = `${jogo.nome} ${jogo.foco ? '⭐' : ''}`;
+        const focoBtn = document.createElement("button");
+        focoBtn.textContent = "⭐";
+        focoBtn.addEventListener("click", () => alternarFoco(jogo.nome));
+        li.appendChild(focoBtn);
         lista.appendChild(li);
 
         // Lista de remoção
         const liRemove = document.createElement("li");
-        liRemove.innerHTML = `
-            ${jogo.nome}
-            <button onclick="removerJogo('${jogo.nome}')">Remover</button>
-        `;
+        liRemove.textContent = jogo.nome;
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remover";
+        removeBtn.addEventListener("click", () => removerJogo(jogo.nome));
+        liRemove.appendChild(removeBtn);
         remover.appendChild(liRemove);
 
         // Lista de foco
